@@ -987,8 +987,8 @@
     <div class="floating-genie" id="genie">
         <img src="https://ajas-m-t.pages.dev/src/assets/images/user-3.jpeg" 
              alt="Ajas" 
-             onload="
-             onerror="
+             onload="console.log('Ajas storyteller loaded!')"
+             onerror="console.error('Failed to load genie'); this.style.display='none';">
         <div class="speech-bubble" id="speechBubble"></div>
     </div>
 
@@ -1293,7 +1293,7 @@
             event.preventDefault();
             const loaderWrapper = document.getElementsByClassName('loader-wrapper')[0];
             loaderWrapper.style.display = 'block';
-            
+            console.log('Loader element found:', loaderWrapper);
             
             const form = event.target;
             const formData = new FormData(form);
@@ -1381,7 +1381,7 @@
             const img = genie.querySelector('img');
             if (img && img.complete && img.naturalHeight !== 0) {
                 isGenieReady = true;
-                
+                console.log('Ajas storyteller is ready!');
             } else {
                 setTimeout(checkGenieReady, 200);
             }
