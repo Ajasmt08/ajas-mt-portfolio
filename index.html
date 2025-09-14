@@ -67,7 +67,34 @@
             /* REMOVED SCROLL-SNAP TO ELIMINATE STUTTERING */
             scroll-behavior: auto;
         }
+        .loader {
+            border: 6px solid #f3f3f3;       /* Light grey */
+            border-top: 6px solid #EA4335;   /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 50px auto; /* center on page */
+        }
 
+        .loader-wrapper {
+            display: none;
+            height: 600vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            border: 0;
+            margin: auto;
+            z-index: 999;
+            background: #ffffff87;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         .hero, .section {
             /* REMOVED SCROLL-SNAP-ALIGN */
             min-height: 100vh;
@@ -953,12 +980,15 @@
     </style>
 </head>
 <body>
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
     <!-- Floating Genie (Ajas Personal Stories) -->
     <div class="floating-genie" id="genie">
         <img src="https://ajas-m-t.pages.dev/src/assets/images/user-3.jpeg" 
              alt="Ajas" 
-             onload="console.log('Ajas storyteller loaded!')"
-             onerror="console.error('Failed to load genie'); this.style.display='none';">
+             onload="
+             onerror="
         <div class="speech-bubble" id="speechBubble"></div>
     </div>
 
@@ -1261,6 +1291,9 @@
         // Send Email Function
         function sendEmail(event) {
             event.preventDefault();
+            const loaderWrapper = document.getElementsByClassName('loader-wrapper')[0];
+            loaderWrapper.style.display = 'block';
+            
             
             const form = event.target;
             const formData = new FormData(form);
@@ -1272,13 +1305,18 @@
                 message: formData.get('message')
             };
             
-            emailjs.send('service_id', 'template_id', templateParams)
+            emailjs.send('service_e9ke3n4', 'template_ps3v88p', templateParams)
                 .then(function(response) {
                     alert('Message sent successfully!');
                     form.reset();
+                    loaderWrapper.style.display = 'none'; // Hide loader on success
                 }, function(error) {
                     alert('Failed to send message. Please try again.');
+                    loaderWrapper.style.display = 'none'; // Hide loader on error
                 });
+            
+            // Remove this line - it was executing immediately:
+            // loaderWrapper.style.display = 'none';
         }
 
         // OPTIMIZED TYPEWRITER ANIMATION
@@ -1343,7 +1381,7 @@
             const img = genie.querySelector('img');
             if (img && img.complete && img.naturalHeight !== 0) {
                 isGenieReady = true;
-                console.log('Ajas storyteller is ready!');
+                
             } else {
                 setTimeout(checkGenieReady, 200);
             }
